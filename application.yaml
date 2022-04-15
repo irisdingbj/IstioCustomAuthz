@@ -1,0 +1,49 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: gateway-my-host
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:
+    - my-host.com
+    tls:
+      mode: SIMPLE
+      credentialName: my-host-tls
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: my-virtual-service
+spec:
+  hosts:
+  - my-host.com
+  gateways:
+  - gateway-my-host
+  http:
+  - match:
+    - uri:
+        prefix: /auth
+    route:
+    - destination:
+        host: keycloak.default.svc.cluster.local
+        port:
+          number: 8080
+  - match:
+    - uri:
+        prefix: /oauth2
+    route:
+    - destination:
+        host: oauth2-proxy.default.svc.cluster.local
+        port:
+          number: 80          
+  - route:
+    - destination:
+        host: upstream.default.svc.cluster.local
+        port:
+          number: 80
