@@ -1,32 +1,32 @@
-  config:
-    clientID: "oauth2-proxy-client"
-    clientSecret: "79c1d7b5-7d36-45e5-b7b2-cd2532876139"
-    cookieSecret: "UmRaMTlQajM1a2ordWFYRnlJb2tjWEd2MVpCK2grOFM="
-    cookieName: "my-cookie"
-    configFile: |-
-      provider = "oidc"
-      oidc_issuer_url="https://my-host.com/auth/realms/my-realm"
-      profile_url="https://my-host.com/auth/realms/my-realm/protocol/openid-connect/userinfo"
-      validate_url="https://my-host.com/auth/realms/my-realm/protocol/openid-connect/userinfo"
-      scope="my-scope openid email profile"
-      pass_host_header = true
-      reverse_proxy = true
-      auth_logging = true
-      cookie_httponly = true
-      cookie_refresh = "4m"
-      cookie_secure = true
-      email_domains = "*"
-      pass_access_token = true
-      pass_authorization_header = true
-      request_logging = true
-      session_store_type = "cookie"
-      set_authorization_header = true
-      set_xauthrequest = true
-      silence_ping_logging = true
-      skip_provider_button = true
-      skip_auth_strip_headers = false
-      skip_jwt_bearer_tokens = true
-      ssl_insecure_skip_verify = true
-      standard_logging = true
-      upstreams = [ "static://200" ]
-      whitelist_domains = [".my-host.com"]
+config:
+  clientID: "oauth2-proxy-client"
+  clientSecret: "79c1d7b5-7d36-45e5-b7b2-cd2532876139"
+  cookieSecret: "UmRaMTlQajM1a2ordWFYRnlJb2tjWEd2MVpCK2grOFM="
+  cookieName: "my-cookie"
+  configFile: |-
+    provider = "oidc"
+    oidc_issuer_url="https://my-host.com/auth/realms/my-realm"
+    profile_url="https://my-host.com/auth/realms/my-realm/protocol/openid-connect/userinfo"
+    validate_url="https://my-host.com/auth/realms/my-realm/protocol/openid-connect/userinfo"
+    scope="my-scope openid email profile"
+    pass_host_header = true
+    reverse_proxy = true
+    auth_logging = true
+    cookie_httponly = true
+    cookie_refresh = "4m"
+    cookie_secure = true
+    email_domains = "*"
+    pass_access_token = true
+    pass_authorization_header = true
+    request_logging = true
+    session_store_type = "cookie"
+    set_authorization_header = true
+    set_xauthrequest = true
+    silence_ping_logging = true
+    skip_provider_button = true
+    skip_auth_strip_headers = false
+    skip_jwt_bearer_tokens = true
+    ssl_insecure_skip_verify = true
+    standard_logging = true
+    upstreams = [ "static://200" ]
+    whitelist_domains = [".my-host.com"]
