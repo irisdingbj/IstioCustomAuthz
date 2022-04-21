@@ -11,7 +11,8 @@ spec:
       name: https
       protocol: HTTPS
     hosts:
-    - my-host.com
+    # - xintong-NUC9i9QNX
+    - "*"
     tls:
       mode: SIMPLE
       credentialName: my-host-tls
@@ -22,7 +23,8 @@ metadata:
   name: my-virtual-service
 spec:
   hosts:
-  - my-host.com
+  # - xintong-NUC9i9QNX
+  - "*"
   gateways:
   - gateway-my-host
   http:

@@ -1,13 +1,13 @@
 config:
   clientID: "oauth2-proxy-client"
-  clientSecret: "79c1d7b5-7d36-45e5-b7b2-cd2532876139"
+  clientSecret: "nB4rMqBmkFImRCFfzHDGJpA0gWbzk3mD"
   cookieSecret: "UmRaMTlQajM1a2ordWFYRnlJb2tjWEd2MVpCK2grOFM="
   cookieName: "my-cookie"
   configFile: |-
     provider = "oidc"
-    oidc_issuer_url="https://my-host.com/auth/realms/my-realm"
-    profile_url="https://my-host.com/auth/realms/my-realm/protocol/openid-connect/userinfo"
-    validate_url="https://my-host.com/auth/realms/my-realm/protocol/openid-connect/userinfo"
+    oidc_issuer_url="http://10.239.160.38:30802/realms/my-realm"
+    profile_url="http://10.239.160.38:30802/realms/my-realm/protocol/openid-connect/userinfo"
+    validate_url="http://10.239.160.38:30802/realms/my-realm/protocol/openid-connect/userinfo"
     scope="my-scope openid email profile"
     pass_host_header = true
     reverse_proxy = true
@@ -29,4 +29,4 @@ config:
     ssl_insecure_skip_verify = true
     standard_logging = true
     upstreams = [ "static://200" ]
-    whitelist_domains = [".my-host.com"]
+    whitelist_domains = [".10.239.160.38:30802"]
