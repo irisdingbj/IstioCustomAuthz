@@ -14,15 +14,15 @@ spec:
     # tls:
     #   httpsRedirect: true
     hosts:
-    - "*"
-    # - "httpbin.example.com"
+    # - "*"
+    - "httpbin.foo.svc.cluster.local"
   - port:
       number: 443
       name: https
       protocol: HTTPS
     hosts:
-    - "*"
-    # - "httpbin.example.com"
+    # - "*"
+    - "httpbin.foo.svc.cluster.local"
     tls:
       mode: SIMPLE
       credentialName: httpbin-tls-cert
@@ -34,8 +34,8 @@ metadata:
   name: httpbin-vsvc
 spec:
   hosts:
-  - "*"
-  # - "httpbin.example.com"
+  # - "*"
+  - "httpbin.foo.svc.cluster.local"
   gateways:
   - httpbin-gateway
   http:

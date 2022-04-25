@@ -15,16 +15,16 @@ data:
           address: localhost:9411
     enablePrometheusMerge: true
     enableTracing: false
-    outboundTrafficPolicy:
-      mode: ALLOW_ANY
+    # outboundTrafficPolicy:
+    #   mode: ALLOW_ANY
     trustDomain: cluster.local
     extensionProviders:
     - name: oauth2-proxy
       envoyExtAuthzHttp:
-        service: oauth2-proxy.default.svc.cluster.local
+        service: oauth2-proxy.foo.svc.cluster.local
         port: 80
         timeout: 1.5s
-        includeHeadersInCheck: ["authorization", "cookie"]
+        includeRequestHeadersInCheck: ["authorization", "cookie"]
         headersToUpstreamOnAllow: ["x-forwarded-access-token", "authorization", "path", "x-auth-request-user", "x-auth-request-email", "x-auth-request-access-token"]
         headersToDownstreamOnDeny: ["content-type", "set-cookie"]
   meshNetworks: 'networks: {}'

@@ -11,8 +11,8 @@ spec:
       name: https
       protocol: HTTPS
     hosts:
-    # - xintong-NUC9i9QNX
-    - "*"
+    - "httpbin.foo.svc.cluster.local"
+    # - "*"
     tls:
       mode: SIMPLE
       credentialName: my-host-tls
@@ -23,8 +23,8 @@ metadata:
   name: my-virtual-service
 spec:
   hosts:
-  # - xintong-NUC9i9QNX
-  - "*"
+  - "httpbin.foo.svc.cluster.local"
+  # - "*"
   gateways:
   - gateway-my-host
   http:
@@ -33,7 +33,7 @@ spec:
         prefix: /auth
     route:
     - destination:
-        host: keycloak.default.svc.cluster.local
+        host: keycloak.keycloak.svc.cluster.local
         port:
           number: 8080
   - match:
@@ -41,11 +41,11 @@ spec:
         prefix: /oauth2
     route:
     - destination:
-        host: oauth2-proxy.default.svc.cluster.local
+        host: oauth2-proxy.foo.svc.cluster.local
         port:
           number: 80          
   - route:
     - destination:
-        host: upstream.default.svc.cluster.local
+        host: upstream.foo.svc.cluster.local
         port:
           number: 80

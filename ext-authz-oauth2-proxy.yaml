@@ -15,5 +15,5 @@ spec:
         - operation:
             #hosts: ["my-host.com"]
             # hosts: ["xintong-NUC9i9QNX"]
-            hosts: ["*"]
+            hosts: ["keycloak.keycloak.svc.cluster.local"]
             notPaths: ["/auth/*"]
