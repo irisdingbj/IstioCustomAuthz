@@ -7,11 +7,21 @@ spec:
     istio: ingressgateway
   servers:
   - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    # tls:
+    #   httpsRedirect: true
+    hosts:
+    - "keycloak.keycloak.svc.cluster.local"
+    # - "httpbin.foo.svc.cluster.local"
+  - port:
       number: 443
       name: https
       protocol: HTTPS
     hosts:
-    - "httpbin.foo.svc.cluster.local"
+    # - "httpbin.foo.svc.cluster.local"
+    - "keycloak.keycloak.svc.cluster.local"
     # - "*"
     tls:
       mode: SIMPLE
@@ -23,7 +33,8 @@ metadata:
   name: my-virtual-service
 spec:
   hosts:
-  - "httpbin.foo.svc.cluster.local"
+  # - "httpbin.foo.svc.cluster.local"
+  - "keycloak.keycloak.svc.cluster.local"
   # - "*"
   gateways:
   - gateway-my-host
