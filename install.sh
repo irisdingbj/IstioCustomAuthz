@@ -33,3 +33,7 @@ curl "http://httpbin.foo:8000/headers" -H "authorization: allow" -s
 kubectl exec "$(kubectl get pod -l app=sleep -n foo -o jsonpath={.items..metadata.name})" -c sleep -n foo -- curl http://httpbin.foo:8000/ip -s -o /dev/null -w "%{http_code}\n"
 curl http://httpbin.foo:8000/ip -H "authorization: allow" -s -o /dev/null -w "%{http_code}\n"
 x-forwarded-access-token
+
+curl   -sk   --data "username=istio&password=123456&grant_type=password&client_id=oauth2-proxy-client"   http://10.239.160.38:30802/realms/my-realm/protocol/openid-connect/token
+
+curl -s -I -HHost:httpbin.foo.svc.cluster.local "http://10.239.160.38:31179/status/200"
