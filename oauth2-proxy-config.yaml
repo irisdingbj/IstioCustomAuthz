@@ -1,7 +1,7 @@
 config:
   clientID: "oauth2-proxy-client"
   clientSecret: "nB4rMqBmkFImRCFfzHDGJpA0gWbzk3mD"
-  cookieSecret: "UmRaMTlQajM1a2ordWFYRnlJb2tjWEd2MVpCK2grOFM="
+  cookieSecret: "CFxIiqqyNuz_5JhDcohNMPk283x3sydOT2xN3nNow7w="
   cookieName: "my-cookie"
   configFile: |-
     provider = "oidc"
@@ -25,8 +25,9 @@ config:
     silence_ping_logging = true
     skip_provider_button = true
     skip_auth_strip_headers = false
-    skip_jwt_bearer_tokens = true
+    #    skip_jwt_bearer_tokens = true
     ssl_insecure_skip_verify = true
     standard_logging = true
-    upstreams = [ "static://200" ]
-    whitelist_domains = [".10.239.160.38:30802"]
+    redirect_url="http://10.239.160.38:31179/oauth2/callback"
+    #upstreams = [ "static://200" ]
+    # whitelist_domains = [".10.239.160.38:30802"]

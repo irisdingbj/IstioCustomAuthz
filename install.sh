@@ -10,12 +10,15 @@ kubectl apply -f ext-authz-oauth2-proxy.yaml
 
 kubectl edit configmap istio -n istio-system
 
-kubectl apply -f istio-configmap.yaml 
+kubectl apply -f istio-configmap.yaml -n istio-system
 kubectl rollout restart deployment/istiod -n istio-system
 
 kubectl apply -f httpbin-istio-gateway.yaml
 
 kubectl apply -f gateway-virtualservice.yaml
+
+# generate cookie secret
+openssl rand -base64 32 | tr -- '+/' '-_'
 
 # install oauth2-proxy
 helm install \
@@ -34,6 +37,6 @@ kubectl exec "$(kubectl get pod -l app=sleep -n foo -o jsonpath={.items..metadat
 curl http://httpbin.foo:8000/ip -H "authorization: allow" -s -o /dev/null -w "%{http_code}\n"
 x-forwarded-access-token
 
-curl   -sk   --data "username=istio&password=123456&grant_type=password&client_id=oauth2-proxy-client"   http://10.239.160.38:30802/realms/my-realm/protocol/openid-connect/token
+curl   -sk   --data "username=istio&password=123456&grant_type=password&client_id=oauth2-proxy-client"   http://10.239.160.38:30802/realms/my-realm/protocol/openid-connect/token | jq ".access_token"
 
 curl -s -I -HHost:httpbin.foo.svc.cluster.local "http://10.239.160.38:31179/status/200"
