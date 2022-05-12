@@ -1,0 +1,14 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: require-jwt
+  namespace: foo
+spec:
+  selector:
+    matchLabels:
+      istio: ingressgateway 
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+       requestPrincipals: ["http://10.239.160.38:30802/realms/my-realm/c9a09dd0-7a8c-4c7d-81e4-0194f944a963"]
