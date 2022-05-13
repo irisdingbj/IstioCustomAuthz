@@ -1,0 +1,43 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: hello-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgatewayiris
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "oauth.demo.com"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  namespace: istio-system
+  name: hello-vsvc
+spec:
+  hosts:
+  - "oauth.demo.com"
+  gateways:
+  - hello-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /oauth2
+    route:
+    - destination:
+        host: oauth2-proxy.tenant1.svc.cluster.local
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: /hello
+    route:
+    - destination:
+        host: helloworld.tenant1.svc.cluster.local
+        port:
+          number: 5000

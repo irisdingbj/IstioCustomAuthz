@@ -17,9 +17,6 @@ kubectl apply -f httpbin-istio-gateway.yaml
 
 kubectl apply -f gateway-virtualservice.yaml
 
-# generate cookie secret
-openssl rand -base64 32 | tr -- '+/' '-_'
-
 # install oauth2-proxy
 helm install \
   --namespace foo \

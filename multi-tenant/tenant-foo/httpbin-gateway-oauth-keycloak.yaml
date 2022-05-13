@@ -11,21 +11,8 @@ spec:
       number: 80
       name: http
       protocol: HTTP
-    # tls:
-    #   httpsRedirect: true
     hosts:
-    # - "*"
-    - "httpbin.foo.svc.cluster.local"
-  - port:
-      number: 443
-      name: https
-      protocol: HTTPS
-    hosts:
-    # - "*"
-    - "httpbin.foo.svc.cluster.local"
-    tls:
-      mode: SIMPLE
-      credentialName: httpbin-tls-cert
+    - "oauth.demo.com"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -34,16 +21,28 @@ metadata:
   name: httpbin-vsvc
 spec:
   hosts:
-  # - "*"
-  - "httpbin.foo.svc.cluster.local"
+  - "oauth.demo.com"
   gateways:
   - httpbin-gateway
   http:
   - match:
     - uri:
-        prefix: /
+        prefix: /oauth2
     route:
     - destination:
+        host: oauth2-proxy.foo.svc.cluster.local
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: /headers
+    route:
+    - destination:
+        host: httpbin.foo.svc.cluster.local
+        port:
+          number: 8000     
+  - route:
+    - destination:
+        host: httpbin.foo.svc.cluster.local
         port:
           number: 8000
-        host: httpbin.foo.svc.cluster.local

@@ -2,6 +2,7 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: istio
+  namespace: istio-system
   labels:
     istio.io/rev: default
 data:
@@ -27,4 +28,12 @@ data:
         includeRequestHeadersInCheck: ["authorization", "cookie"]
         headersToUpstreamOnAllow: ["x-forwarded-access-token", "authorization", "path", "x-auth-request-user", "x-auth-request-email", "x-auth-request-access-token"]
         headersToDownstreamOnDeny: ["content-type", "set-cookie"]
+    - name: oauth2-proxy-iris
+      envoyExtAuthzHttp:
+        service: oauth2-proxy.tenant1.svc.cluster.local
+        port: 80
+        timeout: 1.5s
+        includeRequestHeadersInCheck: ["authorization", "cookie"]
+        headersToUpstreamOnAllow: ["x-forwarded-access-token", "authorization", "path", "x-auth-request-user", "x-auth-request-email", "x-auth-request-access-token"]
+        headersToDownstreamOnDeny: ["content-type", "set-cookie"]       
   meshNetworks: 'networks: {}'

@@ -1,0 +1,17 @@
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  name: ingress-iris
+spec:
+  profile: empty # Do not install CRDs or the control plane
+  hub: docker.io/irisding
+  tag: new
+  components:
+    ingressGateways:
+    - name: ingressgatewayiris
+      namespace: iris
+      enabled: true
+      label:
+        # Set a unique label for the gateway. This is required to ensure Gateways
+        # can select this workload
+        istio: ingressgatewayiris

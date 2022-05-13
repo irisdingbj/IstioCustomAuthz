@@ -13,7 +13,21 @@ spec:
   rules:
     - to:
         - operation:
-            paths: ["/headers"]
-            #hosts: ["httpbin.foo.svc.cluster.local"]
             notPaths: ["/realms/*"]
+
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: deny-auth-policy
+  namespace: istio-system
+spec:
+  selector:
+    matchLabels:
+      istio: ingressgateway
+  action: DENY
+  rules:
+  - from:
+    - source:
+       notrequestPrincipals: ["*"]
 
