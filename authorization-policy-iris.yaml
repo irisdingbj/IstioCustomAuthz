@@ -1,0 +1,36 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-user
+  namespace: istio-system
+spec:
+  selector:
+    matchLabels:
+      istio: ingressgatewayiris
+  action: ALLOW
+  rules:
+  - to:
+    - operation:
+        paths: ["/hello"]
+    when:
+      - key: request.auth.claims[role]
+        values: ["irishello"]
+
+---
+kind: AuthorizationPolicy
+apiVersion: security.istio.io/v1beta1
+metadata:
+  name: oauth2-proxy-iris-hello
+  namespace: istio-system
+spec:
+  selector:
+    matchLabels:
+      istio: ingressgatewayiris
+  action: CUSTOM
+  provider:
+    name: oauth2-proxy-iris
+  rules:
+    - to:
+        - operation:
+            notPaths: ["/realms/*"]
+

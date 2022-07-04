@@ -1,18 +1,96 @@
-# IstioCustomAuthz
-Oauth2 and Keycloak configuration with Istio.
+# Oauth2 and Keycloak configuration new version with Istio IngressGateway.
 
-# steps
+- [Oauth2 and Keycloak configuration new version with Istio IngressGateway.](#oauth2-and-keycloak-configuration-new-version-with-istio-ingressgateway)
+  - [Getting Started](#getting-started)
+    - [Prerequests](#prerequests)
+    - [Create test namespace](#create-test-namespace)
+    - [install Keycloak](#install-keycloak)
+    - [install Istio](#install-istio)
+    - [install Oauth2-proxy](#install-oauth2-proxy)
+  - [Configuration](#configuration)
+    - [Edit Istio ConfigMap](#edit-istio-configmap)
+    - [Apply RequestAuthentication](#apply-requestauthentication)
+    - [Apply Gateway and VirtualService](#apply-gateway-and-virtualservice)
+    - [Edit Keycloak configuration in Keycloak website](#edit-keycloak-configuration-in-keycloak-website)
+    - [Apply Custom AuthorizationPolicy](#apply-custom-authorizationpolicy)
+    - [Config Oauth2-proxy service](#config-oauth2-proxy-service)
+  - [Validation](#validation)
 
-## Install keycloack under keycloack namespace
 
-## Enable auto sidecar injection for namespace foo
+## Getting Started
 
-## Deploy oauth2-proxy, httpbin under namespace foo
+### Prerequests
+Prerequisites for this demo:
 
-## add host mapping for your ingress gw  /etc/hosts
-10.xxxx.xxxx.xxx httpbin.foo.svc.cluster.local
+- Kubernetest cluster
+- Istioctl
+### Create test namespace
+```sh
+$ kubectl create ns foo
+```
+### install Keycloak
+```sh
+$ kubectl apply -f keycloak.yaml
+```
+### install Istio
+```sh
+$ istioctl install -y
+```
+### install Oauth2-proxy
+```sh
+$ helm install \
+  --namespace foo \
+  --values oauth2-proxy-config.yaml \
+  --version 5.0.6 \
+  oauth2-proxy oauth2-proxy/oauth2-proxy
+```
+## Configuration
 
-## Keycloak using standard grant flow
+### Edit Istio ConfigMap
+You can directly apply this yaml file to edit Istio's ConfigMap by this command:
+```sh
+$ kubectl apply -f istio-configmap.yaml
+```
+Or you can also manually change the existing Istio ConfiMap by these steps:
+1. Edit the mesh config with the following command:
+```sh
+$ kubectl edit configmap istio -n istio-system
+```
+2. In the editor, add the extension provider definitions shown below:
+```sh
+data:
+  mesh: |-
+    # Add the following content to define the external authorizers.
+    extensionProviders:
+    - name: oauth2-proxy
+      envoyExtAuthzHttp:
+        service: oauth2-proxy.foo.svc.cluster.local
+        port: 80
+        timeout: 1.5s
+        includeRequestHeadersInCheck: ["authorization", "cookie"]
+        headersToUpstreamOnAllow: ["x-forwarded-access-token", "authorization", "path", "x-auth-request-user", "x-auth-request-email", "x-auth-request-access-token"]
+```
+3. Restart Istiod to allow the change to take effect with the following command:
+```sh
+$ kubectl rollout restart deployment/istiod -n istio-system
+```
+### Apply RequestAuthentication
+```sh
+$ kubectl apply -f request-auth.yaml
+```
+### Apply Gateway and VirtualService
+```sh
+$ kubectl apply -f hello-iris-gateway-oauth-keycloak.night.yaml
+```
+### Edit Keycloak configuration in Keycloak website
 
-## http://httpbin.foo.svc.cluster.local:ingres port/headers
+### Apply Custom AuthorizationPolicy
+```sh
+$ kubectl apply -f authorization-policy-iris.yaml
+```
+### Config Oauth2-proxy service
+```sh
+$ kubectl apply -f oauth2-proxy-config.svc.yaml
+```
 
+## Validation
