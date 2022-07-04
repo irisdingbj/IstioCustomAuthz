@@ -22,7 +22,7 @@
 ### Prerequests
 Prerequisites for this demo:
 
-- Kubernetest cluster
+- Kubernetes cluster
 - Istioctl
 ### Create test namespace
 ```sh
