@@ -11,7 +11,7 @@
     - [Edit Istio ConfigMap](#edit-istio-configmap)
     - [Apply RequestAuthentication](#apply-requestauthentication)
     - [Apply Gateway and VirtualService](#apply-gateway-and-virtualservice)
-    - [Edit Keycloak configuration in Keycloak website](#edit-keycloak-configuration-in-keycloak-website)
+    - [Configure Auth rules by Keycloak UI interface](#configure-auth-rules-by-keycloak-ui-interface)
     - [Apply Custom AuthorizationPolicy](#apply-custom-authorizationpolicy)
     - [Config Oauth2-proxy service](#config-oauth2-proxy-service)
   - [Validation](#validation)
@@ -30,7 +30,7 @@ $ kubectl create ns foo
 ```
 ### install Keycloak
 ```sh
-$ kubectl apply -f keycloak.yaml
+$ kubectl apply -f ./install-configs/keycloak.yaml
 ```
 ### install Istio
 ```sh
@@ -40,7 +40,7 @@ $ istioctl install -y
 ```sh
 $ helm install \
   --namespace foo \
-  --values oauth2-proxy-config.yaml \
+  --values ./install-configs/oauth2-proxy-config.svc.yaml \
   --version 5.0.6 \
   oauth2-proxy oauth2-proxy/oauth2-proxy
 ```
@@ -51,7 +51,7 @@ You can directly apply this yaml file to edit Istio's ConfigMap by this command:
 ```sh
 $ kubectl apply -f istio-configmap.yaml
 ```
-Or you can also manually change the existing Istio ConfiMap by these steps:
+Or you can also manually change the existing Istio ConfigMap by these steps:
 1. Edit the mesh config with the following command:
 ```sh
 $ kubectl edit configmap istio -n istio-system
@@ -82,7 +82,7 @@ $ kubectl apply -f request-auth.yaml
 ```sh
 $ kubectl apply -f hello-iris-gateway-oauth-keycloak.night.yaml
 ```
-### Edit Keycloak configuration in Keycloak website
+### Configure Auth rules by Keycloak UI interface
 
 ### Apply Custom AuthorizationPolicy
 ```sh
