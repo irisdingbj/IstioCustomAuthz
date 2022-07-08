@@ -80,13 +80,13 @@ $ kubectl apply -f request-auth.yaml
 ```
 ### Apply Gateway and VirtualService
 ```sh
-$ kubectl apply -f hello-iris-gateway-oauth-keycloak.night.yaml
+$ kubectl apply -f gateway-vs-oauth-keycloak.yaml
 ```
 ### Configure Auth rules by Keycloak UI interface
 
 ### Apply Custom AuthorizationPolicy
 ```sh
-$ kubectl apply -f authorization-policy-iris.yaml
+$ kubectl apply -f authorization-policy.yaml
 ```
 ### Config Oauth2-proxy service
 ```sh
