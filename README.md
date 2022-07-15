@@ -6,14 +6,14 @@
     - [Create test namespace](#create-test-namespace)
     - [install Keycloak](#install-keycloak)
     - [install Istio](#install-istio)
-    - [install Oauth2-proxy](#install-oauth2-proxy)
   - [Configuration](#configuration)
+    - [Configure Auth rules by Keycloak UI interface](#configure-auth-rules-by-keycloak-ui-interface)
+    - [Add keycloak realm](#add-keycloak-realm)
+    - [install Oauth2-proxy](#install-oauth2-proxy)
     - [Edit Istio ConfigMap](#edit-istio-configmap)
     - [Apply RequestAuthentication](#apply-requestauthentication)
     - [Apply Gateway and VirtualService](#apply-gateway-and-virtualservice)
-    - [Configure Auth rules by Keycloak UI interface](#configure-auth-rules-by-keycloak-ui-interface)
     - [Apply Custom AuthorizationPolicy](#apply-custom-authorizationpolicy)
-    - [Config Oauth2-proxy service](#config-oauth2-proxy-service)
   - [Validation](#validation)
 
 
@@ -29,6 +29,15 @@ Prerequisites for this demo:
 $ kubectl create ns foo
 ```
 ### install Keycloak
+Set the `admin` and `password` like this:
+```sh
+env:
+        - name: KEYCLOAK_ADMIN
+          value: "admin"
+        - name: KEYCLOAK_ADMIN_PASSWORD
+          value: "password"
+```
+And then deploy the keycloak service
 ```sh
 $ kubectl apply -f ./install-configs/keycloak.yaml
 ```
@@ -36,19 +45,30 @@ $ kubectl apply -f ./install-configs/keycloak.yaml
 ```sh
 $ istioctl install -y
 ```
+## Configuration
 
+### Configure Auth rules by Keycloak UI interface
+- Get the Keycloak service port first:
+```sh
+kubectl get svc | grep keycloak
+```
+- Open the `$clusterIP:$KeycloakPort` in Web UI
 
-Add keycloak realm
+### Add keycloak realm
+- Create a realm `Istio`.
+- Create a client `oauth2-proxy`,change `access-type` to `confidential`, and copy the client secret to  `clientSecret` field of `oauth2-proxy-config.svc.yaml` file.
 ### install Oauth2-proxy
+- Add oauth2-proxy repo
+```sh
+helm repo add oauth2-proxy https://oauth2-proxy.github.io/manifests
+```
+- Helm install oauth2-proxy
 ```sh
 $ helm install \
   --namespace foo \
   --values ./install-configs/oauth2-proxy-config.svc.yaml \
-  --version 5.0.6 \
   oauth2-proxy oauth2-proxy/oauth2-proxy
 ```
-## Configuration
-
 ### Edit Istio ConfigMap
 You can directly apply this yaml file to edit Istio's ConfigMap by this command:
 ```sh
@@ -85,15 +105,10 @@ $ kubectl apply -f request-auth.yaml
 ```sh
 $ kubectl apply -f gateway-vs-oauth-keycloak.yaml
 ```
-### Configure Auth rules by Keycloak UI interface
 
 ### Apply Custom AuthorizationPolicy
 ```sh
 $ kubectl apply -f authorization-policy.yaml
-```
-### Config Oauth2-proxy service
-```sh
-$ kubectl apply -f oauth2-proxy-config.svc.yaml
 ```
 
 ## Validation
