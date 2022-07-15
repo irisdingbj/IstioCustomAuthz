@@ -5,7 +5,7 @@ metadata:
   namespace: istio-system
 spec:
   selector:
-    istio: ingressgatewayiris
+    istio: ingressgateway
   servers:
   - port:
       number: 80
@@ -30,7 +30,7 @@ spec:
         prefix: /oauth2
     route:
     - destination:
-        host: oauth2-proxy.tenant1.svc.cluster.local
+        host: oauth2-proxy.foo1.svc.cluster.local
         port:
           number: 80
   - match:
@@ -38,6 +38,6 @@ spec:
         prefix: /hello
     route:
     - destination:
-        host: helloworld.tenant1.svc.cluster.local
+        host: httpbin.foo1.svc.cluster.local
         port:
-          number: 5000
+          number: 8000

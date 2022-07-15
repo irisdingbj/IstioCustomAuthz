@@ -1,12 +1,12 @@
 apiVersion: security.istio.io/v1beta1
 kind: RequestAuthentication
 metadata:
-  name: request-keycloak-auth-iris
+  name: request-keycloak-auth
   namespace: istio-system
 spec:
   selector:
     matchLabels:
-      istio: ingressgatewayiris
+      istio: ingressgateway
   jwtRules:
-  - issuer: "http://10.238.154.207:31769/realms/iris"
-    jwksUri: "http://10.238.154.207:31769/realms/iris/protocol/openid-connect/certs"
+  - issuer: "http://10.239.160.38:30321/realms/istio"
+    jwksUri: "http://10.239.160.38:30321/realms/istio/protocol/openid-connect/certs"

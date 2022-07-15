@@ -1,6 +1,6 @@
 config:
   clientID: "oauth2-proxy"
-  clientSecret: "IeN2O2ZEwlja9frukAYqf6lkMIAYV7xh"
+  clientSecret: "sG5C91hJGOd4eJKJswLpt4ZtGfkXpR5a"
   cookieSecure: false
   cookieName: "my-cookie"
   cookieSecret: "UmRaMTlQajM1a2ordWFYRnlJb2tjWEd2MVpCK2grOFM="

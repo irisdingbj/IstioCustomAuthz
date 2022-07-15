@@ -36,6 +36,9 @@ $ kubectl apply -f ./install-configs/keycloak.yaml
 ```sh
 $ istioctl install -y
 ```
+
+
+Add keycloak realm
 ### install Oauth2-proxy
 ```sh
 $ helm install \

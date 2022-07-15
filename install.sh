@@ -20,6 +20,8 @@ kubectl apply -f gateway-virtualservice.yaml
 # generate cookie secret
 openssl rand -base64 32 | tr -- '+/' '-_'
 
+helm repo add oauth2-proxy https://oauth2-proxy.github.io/manifests
+
 # install oauth2-proxy
 helm install \
   --namespace foo \
